@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">SpotFinder</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="places">Lugares</string>
+    <string name="profile">Perfil</string>
+    <string name="settings">Configuración</string>
+    <string name="title_change_password">Cambiar contraseña</string>
+    <string name="txt_change_password">Cambia tu contraseña</string>
+    <string name="title_change_name">Cambiar nombre</string>
+    <string name="txt_change_name">Actualiza tu nombre usuario</string>
+    <string name="title_change_phone">Cambiar teléfono</string>
+    <string name="txt_change_phone">Cambia tú número de teléfono</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="txt_notifications">Activa las notificaciones</string>
+    <string name="title_dark_mode">Modo oscuro</string>
+    <string name="txt_dark_mode">Activa el modo oscuro para un cambio visual</string>
+    <string name="title_logout">Cerrar sesión</string>
+    <string name="txt_logout">Cierra tu sesión</string>
+    <string name="title_user">Usuario:</string>
+    <string name="category">Tipo de establecimiento:</string>
+    <string name="category_all">General</string>
+    <string name="park_chip">Parque</string>
+    <string name="live_music_chip">Música en vivo</string>
+    <string name="sports_bar_chip">Sport bar</string>
+    <string name="nightclub_chip">Nightclub</string>
+    <string name="cafe_chip">Café</string>
+    <string name="bar_chip">Bar</string>
+    <string name="restaurant_chip">Restaurante</string>
+    <string name="txt_apply">Aplicar</string>
 </resources>

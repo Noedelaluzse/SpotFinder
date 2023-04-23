@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 
 }
 
@@ -36,6 +37,7 @@ android {
     }
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -52,9 +54,6 @@ dependencies {
     // Coordinator Layout
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
 
-    // Material Components
-    implementation 'com.google.android.material:material:1.10.0-alpha01'
-
     // Navigation Component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
@@ -66,8 +65,11 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:2.5.1"
 
     // Data binding
-    kapt "com.android.databinding:compiler:3.2.0-alpha10"
-    kapt "androidx.databinding:databinding-common:7.4.2"
+//    kapt "com.android.databinding:compiler:3.2.0-alpha10"
+    //kapt "androidx.databinding:databinding-compiler:3.2.0-alpha16"
+   // kapt "androidx.databinding:databinding-common:7.4.2"
+    //implementation "androidx.databinding:databinding-runtime:7.4.2"
+
 
     // DataStore
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
@@ -104,5 +106,8 @@ dependencies {
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // libreria para interceptor ver que es lo que se envia de retrofit
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/placesFragment">
+
+    <fragment
+        android:id="@+id/placesFragment"
+        android:name="com.example.spotfinder.ui.fragments.places.PlacesFragment"
+        android:label="Lugares"
+        tools:layout="@layout/fragment_places" >
+        <action
+            android:id="@+id/action_placesFragment_to_placesBottomSheet"
+            app:destination="@id/placesBottomSheet"/>
+        <argument
+            android:name="backFromBottomSheet"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_placesFragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.spotfinder.ui.fragments.profile.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.spotfinder.ui.fragments.settings.SettingsFragment"
+        android:label="Configuración"
+        tools:layout="@layout/fragment_settings" />
+    <dialog
+        android:id="@+id/placesBottomSheet"
+        android:name="com.example.spotfinder.ui.fragments.places.bottomsheet.PlacesBottomSheet"
+        android:label="places_bottom_sheet"
+        tools:layout="@layout/places_bottom_sheet" >
+        <action
+            android:id="@+id/action_placesBottomSheet_to_placesFragment"
+            app:destination="@id/placesFragment"
+            app:popUpTo="@id/placesFragment"
+            app:popUpToInclusive="true"/>
+    </dialog>
+    <activity
+        android:id="@+id/detailsActivity"
+        android:name="com.example.spotfinder.ui.DetailsActivity"
+        android:label="Detalles"
+        tools:layout="@layout/activity_details" >
+        <argument
+            android:name="result"
+            app:argType="com.example.spotfinder.models.Place" />
+    </activity>
+
+</navigation>
