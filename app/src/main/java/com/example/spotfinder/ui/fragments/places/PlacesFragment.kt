@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +18,11 @@ import com.example.spotfinder.R
 import com.example.spotfinder.viewmodels.MainViewModel
 import com.example.spotfinder.adapters.PlacesAdapter
 import com.example.spotfinder.databinding.FragmentPlacesBinding
+import com.example.spotfinder.util.Constants.Companion.LOG_OUT
 import com.example.spotfinder.util.NetworkListener
 import com.example.spotfinder.util.NetworkResult
 import com.example.spotfinder.util.observeOnce
+import com.example.spotfinder.viewmodels.LoginViewModel
 import com.example.spotfinder.viewmodels.PlacesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -35,10 +38,9 @@ class PlacesFragment : Fragment() {
     private var _binding: FragmentPlacesBinding? = null
     private val binding get() = _binding!!
 
-
     private  val mainViewModel: MainViewModel by activityViewModels()
     private  val placesViewModel: PlacesViewModel by activityViewModels()
-
+    private val loginViewModel: LoginViewModel by activityViewModels()
     private val mAdapter by lazy { PlacesAdapter() }
 
     private lateinit var networkListener: NetworkListener
@@ -49,10 +51,25 @@ class PlacesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPlacesBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
+        loginViewModel.readUser.observeOnce(viewLifecycleOwner) {flag ->
+            if(flag == LOG_OUT) {
+                val navController = findNavController()
+                navController.navigate(R.id.action_placesFragment_to_loginFragment)
+            } else {
+                binding.placesFab.visibility = View.VISIBLE
+                setupRecyclerView()
+            }
+        }
         setupRecyclerView()
-
         placesViewModel.readBackOnline.observe(viewLifecycleOwner) {
             placesViewModel.backOnline = it
         }
@@ -77,8 +94,8 @@ class PlacesFragment : Fragment() {
             }
         }
 
-        return binding.root
     }
+
     private fun setupRecyclerView() {
         binding.recyclerview.adapter = mAdapter
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -97,6 +114,8 @@ class PlacesFragment : Fragment() {
             }
         }
     }
+
+
 
     private fun requestApiData() {
         Log.d("PlacesFragment", "requestApiData called!" )

@@ -7,15 +7,19 @@ import androidx.datastore.core.IOException
 import androidx.datastore.preferences.*
 import androidx.datastore.preferences.core.*
 import com.example.spotfinder.util.Constants.Companion.DEFAULT_CATEGORY
+import com.example.spotfinder.util.Constants.Companion.LOG_OUT
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_BACK_ONLINE
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_CATEGORY_NAME
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_CATEGORY_NAME_ID
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_NAME
+import com.example.spotfinder.util.Constants.Companion.PREFERENCES_VALID_USER
+import com.example.spotfinder.util.Options
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import okhttp3.internal.userAgent
 import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
@@ -28,6 +32,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val selectedCategory = stringPreferencesKey(PREFERENCES_CATEGORY_NAME)
         val selectedCategoryId = intPreferencesKey(PREFERENCES_CATEGORY_NAME_ID)
         val backOnline = booleanPreferencesKey(PREFERENCES_BACK_ONLINE)
+        val validUser = stringPreferencesKey(PREFERENCES_VALID_USER)
     }
 
     private val dataStore: DataStore<Preferences> = context.dataStore
@@ -42,6 +47,12 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     suspend fun saveBackOnline(backOnline: Boolean) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.backOnline] = backOnline
+        }
+    }
+
+    suspend fun saveUser(user: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.validUser] = user
         }
     }
 
@@ -73,6 +84,19 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         .map { preferences ->
             val backOnline = preferences[PreferencesKeys.backOnline] ?: false
             backOnline
+        }
+
+    val readValidUser: Flow<String> = dataStore.data
+        .catch { exception ->
+            if ( exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val user = preferences[PreferencesKeys.validUser] ?: LOG_OUT
+            user
         }
 }
 

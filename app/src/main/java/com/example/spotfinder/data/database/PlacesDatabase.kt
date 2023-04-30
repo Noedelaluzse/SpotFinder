@@ -12,4 +12,5 @@ import androidx.room.TypeConverters
 abstract class PlacesDatabase: RoomDatabase() {
 
     abstract fun placesDao(): PlacesDao
+
 }

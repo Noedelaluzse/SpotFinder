@@ -32,4 +32,7 @@
     <color name="settings_text_title">#000000</color>
 
     <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+    <color name="strokeColor">@color/lightMediumGray</color>
+    <color name="cardBackground">@color/white</color>
+    <color name="titleColor">@color/darker</color>
 </resources>

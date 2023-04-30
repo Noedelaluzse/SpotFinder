@@ -2,6 +2,8 @@ package com.example.spotfinder.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,12 +27,22 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration( setOf(
             R.id.placesFragment,
             R.id.settingsFragment,
-            R.id.profileFragment
+            R.id.profileFragment,
+            R.id.loginFragment
         ))
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener{ _, destination, _ ->
+            if (destination.id == R.id.loginFragment) {
+                bottomNavigationView.visibility = View.INVISIBLE
+            } else {
+                bottomNavigationView.visibility = View.VISIBLE
+            }
+
+        }
 
     }
 

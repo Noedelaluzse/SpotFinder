@@ -28,4 +28,16 @@
     <string name="bar_chip">Bar</string>
     <string name="restaurant_chip">Restaurante</string>
     <string name="txt_apply">Aplicar</string>
+    <string name="other_chip">Otro</string>
+    <string name="no_comments">Sin comentarios</string>
+    <string name="title_register">Registrarse</string>
+    <string name="title_log_in">Ingresar</string>
+    <string name="place_holder_password">Contraseña</string>
+    <string name="place_holder_phone">Telefono</string>
+    <string name="dialog_title">Error de datos</string>
+    <string name="dialog_title_user">Mensaje</string>
+    <string name="dialog_body">Los datos ingresados son incorrectos</string>
+    <string name="ok">Aceptar</string>
+    <string name="error_message">El usuario no existe o las credenciales son incorrectas</string>
+
 </resources>

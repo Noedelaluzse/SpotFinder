@@ -110,4 +110,9 @@ dependencies {
     // libreria para interceptor ver que es lo que se envia de retrofit
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
+    // Google Maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    //implementation 'com.google.android.material:material:1.7.0-alpha02'
+    //implementation 'com.google.android.material:material:1.5.0'
+
 }

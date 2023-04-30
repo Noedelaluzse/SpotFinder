@@ -3,9 +3,9 @@ package com.example.spotfinder.util
 import androidx.recyclerview.widget.DiffUtil
 import com.example.spotfinder.models.Place
 
-class PlacesDiffUtil (
-    private val oldList: List<Place>,
-    private val newList: List<Place> ): DiffUtil.Callback() {
+class PlacesDiffUtil<T> (
+    private val oldList: List<T>,
+    private val newList: List<T> ): DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
        return oldList.size

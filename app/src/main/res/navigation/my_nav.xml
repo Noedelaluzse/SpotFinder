@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_placesFragment_to_detailsActivity"
             app:destination="@id/detailsActivity" />
+        <action
+            android:id="@+id/action_placesFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -31,7 +34,13 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.spotfinder.ui.fragments.settings.SettingsFragment"
         android:label="Configuración"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <dialog
         android:id="@+id/placesBottomSheet"
         android:name="com.example.spotfinder.ui.fragments.places.bottomsheet.PlacesBottomSheet"
@@ -52,5 +61,14 @@
             android:name="result"
             app:argType="com.example.spotfinder.models.Place" />
     </activity>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.spotfinder.ui.fragments.login.LoginFragment"
+        android:label=""
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_placesFragment"
+            app:destination="@id/placesFragment" />
+    </fragment>
 
 </navigation>
