@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.spotfinder.data.DataStoreRepository
 import com.example.spotfinder.util.Constants.Companion.DEFAULT_CATEGORY
 import com.example.spotfinder.util.Constants.Companion.QUERY_CATEGORY
+import com.example.spotfinder.util.Constants.Companion.QUERY_UID
 import com.example.spotfinder.util.MapCategoryToApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,11 +25,13 @@ class PlacesViewModel @Inject constructor(
     AndroidViewModel(application) {
 
     private var categoryType = DEFAULT_CATEGORY
+    private var uidUser = ""
 
     var networkStatus = false
     var backOnline = false
 
     val readPlaceType = dataStoreRepository.readCategory
+    val readUid = dataStoreRepository.readUid
     val readBackOnline = dataStoreRepository.readBackOnline.asLiveData()
 
     fun saveCategoryType(categoryType: String, categoryTypeId: Int) =
@@ -50,10 +53,19 @@ class PlacesViewModel @Inject constructor(
              }
          }
 
+         viewModelScope.launch {
+             readUid.collect{ value ->
+                 uidUser = value
+             }
+         }
+
+
          val categoryTypeMapped = MapCategoryToApi(categoryType)
 
+         Log.d("savingData", uidUser)
 
         queries[QUERY_CATEGORY] = categoryTypeMapped
+         queries[QUERY_UID] = uidUser
         return queries
     }
 

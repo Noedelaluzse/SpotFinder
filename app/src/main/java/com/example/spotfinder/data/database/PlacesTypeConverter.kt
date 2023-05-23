@@ -20,15 +20,4 @@ class PlacesTypeConverter {
         val listType = object : TypeToken<ResponsePlaces>() {}.type
         return gson.fromJson(data, listType)
     }
-
-    @TypeConverter
-    fun responseUserToString(responseUser: UserResponse): String {
-        return gson.toJson(responseUser)
-    }
-
-    @TypeConverter
-    fun stringToResponseUser(data: String) : UserResponse {
-        val listType = object : TypeToken<UserResponse>() {}.type
-        return gson.fromJson(data, listType)
-    }
 }

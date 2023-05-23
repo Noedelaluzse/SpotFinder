@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.login.SignUpFragment">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/courgette"
+        android:text="Bienvenido a SpotFinder"
+        android:textColor="@color/dark"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/courgette"
+        android:text="Ingresa los siguientes datos para crear tu perfil"
+        android:textColor="@color/dark"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/tv_user_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/title_name"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/et_user_register"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="64dp"
+        android:ems="10"
+        android:fontFamily="@font/courgette"
+        android:hint="@string/place_holder_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_register"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_register" />
+
+    <TextView
+        android:id="@+id/tv_phone_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/title_telefono"
+        app:layout_constraintStart_toStartOf="@+id/et_user_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_user_register" />
+
+    <EditText
+        android:id="@+id/et_phone_register"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="64dp"
+        android:ems="10"
+        android:fontFamily="@font/courgette"
+        android:hint="@string/place_holder_phone"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_phone_register"
+        app:layout_constraintTop_toBottomOf="@+id/tv_phone_register" />
+
+    <EditText
+        android:id="@+id/et_password_register"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="64dp"
+        android:ems="10"
+        android:fontFamily="@font/courgette"
+        android:hint="@string/place_holder_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_password_register"
+        app:layout_constraintTop_toBottomOf="@+id/tv_password_register" />
+
+    <TextView
+        android:id="@+id/tv_password_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/title_password"
+        app:layout_constraintStart_toStartOf="@+id/et_phone_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_phone_register" />
+
+    <ImageView
+        android:id="@+id/img_option1"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/avatar_1_raster"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+
+    <ImageView
+        android:id="@+id/img_option2"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+
+        android:layout_marginStart="16dp"
+        android:background="@drawable/avatar_2_raster"
+        app:layout_constraintStart_toEndOf="@+id/img_option1"
+        app:layout_constraintTop_toTopOf="@+id/img_option1"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/img_option3"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+
+        android:layout_marginStart="16dp"
+        android:background="@drawable/avatar_3_raster"
+        app:layout_constraintStart_toEndOf="@+id/img_option2"
+        app:layout_constraintTop_toTopOf="@+id/img_option2"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/img_option4"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/avatar_4_raster"
+        app:layout_constraintStart_toStartOf="@+id/img_option1"
+        app:layout_constraintTop_toBottomOf="@+id/img_option1"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/img_option5"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+
+        android:layout_marginStart="16dp"
+        android:background="@drawable/avatar_5_raster"
+        app:layout_constraintStart_toEndOf="@+id/img_option4"
+        app:layout_constraintTop_toTopOf="@+id/img_option4"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+
+    <ImageView
+        android:id="@+id/img_option6"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/avatar_6_raster"
+        app:layout_constraintStart_toEndOf="@+id/img_option5"
+        app:layout_constraintTop_toTopOf="@+id/img_option5"
+        app:srcCompat="@drawable/circle"
+        tools:srcCompat="@drawable/circle" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/courgette"
+        android:text="@string/title_avatar"
+        app:layout_constraintStart_toStartOf="@+id/et_password_register"
+        app:layout_constraintTop_toBottomOf="@+id/et_password_register" />
+
+    <Button
+        android:id="@+id/btn_registrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Registrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/courgette"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_option5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

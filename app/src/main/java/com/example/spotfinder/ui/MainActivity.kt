@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             R.id.placesFragment,
             R.id.settingsFragment,
             R.id.profileFragment,
-            R.id.loginFragment
+            R.id.loginFragment,
         ))
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener{ _, destination, _ ->
-            if (destination.id == R.id.loginFragment) {
+            if (destination.id == R.id.loginFragment || destination.id == R.id.signUpFragment) {
                 bottomNavigationView.visibility = View.INVISIBLE
             } else {
                 bottomNavigationView.visibility = View.VISIBLE

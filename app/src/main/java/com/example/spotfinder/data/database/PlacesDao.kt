@@ -16,12 +16,6 @@ interface PlacesDao {
     @Query("SELECT * FROM places_table ORDER BY id ASC")
     fun readPlaces(): Flow<List<PlacesEntity>>
 
-    /*
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun inserUser(userEntity: UserEntity)
-
-    @Query("SELECT * from user_table ORDER BY id ASC")
-    fun readUser(): Flow<List<UserEntity>>*/
 
     @Query("DELETE FROM places_table")
     suspend fun deleteAll()

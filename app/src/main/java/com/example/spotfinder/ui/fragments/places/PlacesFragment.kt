@@ -21,6 +21,7 @@ import com.example.spotfinder.databinding.FragmentPlacesBinding
 import com.example.spotfinder.util.Constants.Companion.LOG_OUT
 import com.example.spotfinder.util.NetworkListener
 import com.example.spotfinder.util.NetworkResult
+import com.example.spotfinder.util.Uuid
 import com.example.spotfinder.util.observeOnce
 import com.example.spotfinder.viewmodels.LoginViewModel
 import com.example.spotfinder.viewmodels.PlacesViewModel
@@ -51,6 +52,15 @@ class PlacesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPlacesBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
+        mainViewModel.getJWT()
+        if (Uuid.UUID_SAVE == "") {
+            mainViewModel.jwtUser.observe(viewLifecycleOwner) {
+                Log.d("JWT", it)
+                Uuid.UUID_SAVE = it
+            }
+        }
 
         return binding.root
     }
@@ -58,8 +68,7 @@ class PlacesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = this
-        binding.mainViewModel = mainViewModel
+
         loginViewModel.readUser.observeOnce(viewLifecycleOwner) {flag ->
             if(flag == LOG_OUT) {
                 val navController = findNavController()
@@ -67,32 +76,32 @@ class PlacesFragment : Fragment() {
             } else {
                 binding.placesFab.visibility = View.VISIBLE
                 setupRecyclerView()
-            }
-        }
-        setupRecyclerView()
-        placesViewModel.readBackOnline.observe(viewLifecycleOwner) {
-            placesViewModel.backOnline = it
-        }
-
-
-        lifecycleScope.launch {
-            networkListener = NetworkListener()
-            networkListener.checkNetworkAvailability(requireContext())
-                .collect{status ->
-                    Log.d("NetworkListener", status.toString())
-                    placesViewModel.networkStatus = status
-                    placesViewModel.showNetworkStatus()
-                    readDatabase()
+                placesViewModel.readBackOnline.observe(viewLifecycleOwner) {
+                    placesViewModel.backOnline = it
                 }
-        }
 
-        binding.placesFab.setOnClickListener {
-            if (placesViewModel.networkStatus) {
-                findNavController().navigate(R.id.action_placesFragment_to_placesBottomSheet)
-            } else {
-                placesViewModel.showNetworkStatus()
+
+                lifecycleScope.launch {
+                    networkListener = NetworkListener()
+                    networkListener.checkNetworkAvailability(requireContext())
+                        .collect{status ->
+                            Log.d("NetworkListener", status.toString())
+                            placesViewModel.networkStatus = status
+                            placesViewModel.showNetworkStatus()
+                            readDatabase()
+                        }
+                }
+
+                binding.placesFab.setOnClickListener {
+                    if (placesViewModel.networkStatus) {
+                        findNavController().navigate(R.id.action_placesFragment_to_placesBottomSheet)
+                    } else {
+                        placesViewModel.showNetworkStatus()
+                    }
+                }
             }
         }
+        //setupRecyclerView()
 
     }
 
@@ -114,8 +123,6 @@ class PlacesFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun requestApiData() {
         Log.d("PlacesFragment", "requestApiData called!" )

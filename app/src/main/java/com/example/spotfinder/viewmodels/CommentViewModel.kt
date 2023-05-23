@@ -8,10 +8,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.spotfinder.data.Repository
+import com.example.spotfinder.models.comments.NewComment
 import com.example.spotfinder.models.comments.ResponseComments
 import com.example.spotfinder.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -22,10 +24,15 @@ class CommentViewModel @Inject constructor (
 ): AndroidViewModel(application) {
 
     var commentsResponse: MutableLiveData<NetworkResult<ResponseComments>> = MutableLiveData()
+    var newCommentResponse: MutableLiveData<NetworkResult<ResponseComments>> = MutableLiveData()
     var networkStatus = false
 
     fun getComments(idPlace: String) = viewModelScope.launch {
         getCommentsSaveCall(idPlace)
+    }
+
+    fun createComment(newComment: NewComment) = viewModelScope.launch {
+        createNewCommentSaveCall(newComment)
     }
 
     private suspend fun getCommentsSaveCall(idPlace: String) {
@@ -41,7 +48,21 @@ class CommentViewModel @Inject constructor (
             commentsResponse.value = NetworkResult.Error("Sin conexión a internet")
         }
     }
-    private fun handleCommentsResponse(response: Response<ResponseComments>): NetworkResult<ResponseComments>? {
+
+    private suspend fun createNewCommentSaveCall(newComment: NewComment) {
+        newCommentResponse.value = NetworkResult.Loading()
+        if (hasInternetConnection()) {
+            try {
+                val response = repository.remote.createComment(newComment)
+                newCommentResponse.value = handleNewCommentResponse(response)
+            } catch (e: Exception) {
+                newCommentResponse.value = NetworkResult.Error("No se pudo realizar el comentario")
+            }
+        } else {
+            newCommentResponse.value = NetworkResult.Error("Sin conexión a internet")
+        }
+    }
+    private fun handleCommentsResponse(response: Response<ResponseComments>): NetworkResult<ResponseComments> {
         when {
             response.message().toString().contains("timeout") -> {
                 return NetworkResult.Error("Timeout")
@@ -62,6 +83,26 @@ class CommentViewModel @Inject constructor (
         }
     }
 
+    private fun handleNewCommentResponse(response: Response<ResponseComments>): NetworkResult<ResponseComments> {
+        when {
+            response.message().toString().contains("timeout") -> {
+                return NetworkResult.Error("Timeout")
+            }
+            response.code() == 402 -> {
+                return NetworkResult.Error("API Key limited.")
+            }
+            response.body()?.ok == false ->{
+                return NetworkResult.Error(response.message())
+            }
+            response.isSuccessful -> {
+                val data = response.body()!!
+                return NetworkResult.Success(data)
+            } else -> {
+                return NetworkResult.Error(response.message())
+            }
+
+        }
+    }
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<Application>().getSystemService(
             Context.CONNECTIVITY_SERVICE

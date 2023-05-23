@@ -3,26 +3,29 @@ package com.example.spotfinder.viewmodels
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.spotfinder.data.DataStoreRepository
 import com.example.spotfinder.data.Repository
 import com.example.spotfinder.data.database.PlacesEntity
-import com.example.spotfinder.data.database.UserEntity
 import com.example.spotfinder.models.ResponsePlaces
+import com.example.spotfinder.models.UserLogged
+import com.example.spotfinder.models.WrapperUser
 import com.example.spotfinder.models.login.LoginPostRequest
+import com.example.spotfinder.models.login.NewUser
 import com.example.spotfinder.models.login.UserResponse
 import com.example.spotfinder.util.Constants.Companion.DEFAULT_CATEGORY
 import com.example.spotfinder.util.Constants.Companion.LOG_OUT
 import com.example.spotfinder.util.NetworkResult
-import dagger.hilt.android.internal.Contexts.getApplication
+import com.example.spotfinder.util.Uuid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class MainViewModel @Inject constructor (
@@ -30,24 +33,26 @@ class MainViewModel @Inject constructor (
     private val dataStoreRepository: DataStoreRepository,
     application: Application): AndroidViewModel(application) {
 
+    private  var id = ""
 
     /** ROOM DATABASE **/
     val readPlaces: LiveData<List<PlacesEntity>> = repository.local.readDatabase().asLiveData()
-    //val readUser: LiveData<List<UserEntity>>  = repository.local.readUser().asLiveData()
+    val readUid = dataStoreRepository.readUid
+    val readJWT = dataStoreRepository.readJWT
 
     private fun insertPlaces(placesEntity: PlacesEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.local.insertPlaces(placesEntity)
         }
-    /*private fun inserUser(userEntity: UserEntity) =
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.local.insertUser(userEntity)
-        }*/
 
 
     /** RETROFIT **/
     var placesResponse: MutableLiveData<NetworkResult<ResponsePlaces>> = MutableLiveData()
     var loginResponse: MutableLiveData<NetworkResult<UserResponse>> = MutableLiveData()
+    var userInfo: MutableLiveData<NetworkResult<WrapperUser>> = MutableLiveData()
+
+    val temp: MutableLiveData<String> = MutableLiveData("")
+    val jwtUser: MutableLiveData<String> = MutableLiveData("")
 
 
     fun getPlaces(queries: Map<String, String>) = viewModelScope.launch  {
@@ -56,6 +61,13 @@ class MainViewModel @Inject constructor (
 
     fun getLogin(user: LoginPostRequest) = viewModelScope.launch {
         getLoginSaveCall(user)
+    }
+
+    fun createUser(newUser: NewUser) = viewModelScope.launch {
+        createNewUserSaveCall(newUser)
+    }
+    fun getUserInfo(id: String) = viewModelScope.launch {
+        getUserInfoSaveCall(id)
     }
 
     private suspend fun getPlacesSaveCall(queries: Map<String, String>) {
@@ -77,6 +89,21 @@ class MainViewModel @Inject constructor (
         }
 
     }
+    private suspend fun getUserInfoSaveCall(id: String) {
+        userInfo.value = NetworkResult.Loading()
+        if (hasInternetConnection()) {
+            try {
+                val response = repository.remote.getUserInfo(id)
+                userInfo.value = handleUserInfoResponse(response)
+                val userInfo = userInfo.value!!.data
+            } catch (e: Exception) {
+                loginResponse.value = NetworkResult.Error("Usuario no encontrado")
+            }
+        } else {
+            loginResponse.value = NetworkResult.Error("Sin conexión a internet")
+        }
+
+    }
 
     private suspend fun getLoginSaveCall(user: LoginPostRequest) {
         loginResponse.value = NetworkResult.Loading()
@@ -84,11 +111,14 @@ class MainViewModel @Inject constructor (
             try {
                 val response = repository.remote.getLogin(user)
                 loginResponse.value = handleLoginResponse(response)
-
-                val offlineData = loginResponse.value?.data
-                if (offlineData != null) {
-                    //offilineCacheUser(offlineData)
+                val userInfo = loginResponse.value!!.data
+                if (userInfo != null) {
+                    Log.d("savingData",userInfo.toString())
+                    dataStoreRepository.saveUID(userInfo.uid)
+                    dataStoreRepository.saveJWT(userInfo.token)
+                    Uuid.UUID_SAVE = userInfo.token
                 }
+
             } catch (e: Exception) {
                 loginResponse.value = NetworkResult.Error("Usuario no encontrado")
             }
@@ -97,6 +127,26 @@ class MainViewModel @Inject constructor (
         }
     }
 
+    private suspend fun createNewUserSaveCall(newUser: NewUser) {
+        loginResponse.value = NetworkResult.Loading()
+        if (hasInternetConnection()) {
+            try {
+                val response = repository.remote.createUer(newUser)
+                loginResponse.value = handleLoginResponse(response)
+                val userInfo = loginResponse.value!!.data
+                if (userInfo != null) {
+                    Log.d("savingData", userInfo.toString())
+                    dataStoreRepository.saveUID(userInfo.uid)
+                    dataStoreRepository.saveJWT(userInfo.token)
+                    Uuid.UUID_SAVE = userInfo.token
+                }
+            } catch (e: Exception) {
+                loginResponse.value = NetworkResult.Error("Un usuario ya existe con esos datos")
+            }
+        } else {
+            loginResponse.value = NetworkResult.Error("Sin conexion a internet")
+        }
+    }
     private fun handleLoginResponse(response: Response<UserResponse>): NetworkResult<UserResponse> {
         when {
             response.message().toString().contains("timeout") -> {
@@ -110,6 +160,7 @@ class MainViewModel @Inject constructor (
             }
             response.isSuccessful -> {
                 val userData = response.body()
+                Uuid.UUID_SAVE = response!!.body()!!.uid
                 return NetworkResult.Success(userData!!)
             }
             else -> {
@@ -122,11 +173,6 @@ class MainViewModel @Inject constructor (
         val placesEntity = PlacesEntity(offlineData)
         insertPlaces(placesEntity)
     }
-    /*private fun offilineCacheUser(data: UserResponse) {
-        val userEntity = UserEntity(data)
-        inserUser(userEntity)
-    }*/
-
 
     private fun hadlePlacesResponse(response: Response<ResponsePlaces>): NetworkResult<ResponsePlaces>? {
         when {
@@ -149,7 +195,27 @@ class MainViewModel @Inject constructor (
         }
     }
 
-
+    private fun handleUserInfoResponse(response: Response<WrapperUser>): NetworkResult<WrapperUser> {
+        when {
+            response.message().toString().contains("timeout") -> {
+                return NetworkResult.Error("Timeout")
+            }
+            response.code() == 402 -> {
+                return NetworkResult.Error("API Key limited.")
+            }
+            response.body()!!.user.name.isNullOrEmpty() -> {
+                return NetworkResult.Error(response.message())
+            }
+            response.isSuccessful -> {
+                val userinfo = response.body()
+                Log.d("PUTAMADRE", userInfo.toString())
+                return NetworkResult.Success(userinfo!!)
+            }
+            else -> {
+                return NetworkResult.Error(response.message())
+            }
+        }
+    }
 
     private fun hasInternetConnection(): Boolean {
             val connectivityManager = getApplication<Application>().getSystemService(
@@ -168,10 +234,27 @@ class MainViewModel @Inject constructor (
 
     // public methods
 
+    fun getUserInfomationForfragment() {
+
+        viewModelScope.launch {
+            readUid.collect{ value ->
+                temp.value = value
+            }
+        }
+    }
+
+    fun getJWT() {
+
+        viewModelScope.launch {
+            readJWT.collect{ value ->
+                jwtUser.value = value
+            }
+        }
+    }
     fun login(phone: String, password: String) {
         val user = LoginPostRequest(phone, password)
         getLogin(user)
-
+        //getUserInfo(phone)
 
         Log.d("UserData", loginResponse.value!!.data.toString())
 

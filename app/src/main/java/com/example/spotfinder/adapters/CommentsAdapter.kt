@@ -1,7 +1,11 @@
 package com.example.spotfinder.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spotfinder.databinding.CommetRowLayoutBinding
@@ -14,10 +18,15 @@ class CommentsAdapter: RecyclerView.Adapter<CommentsAdapter.MyViewHolder>() {
 
     class MyViewHolder(private val binding: CommetRowLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(result: Comment) {
+        fun bind(result: Comment, holder: View) {
+            Log.d("imgUser", result.user.toString())
+                if (result.user.img != null) {
+                    val urlImage = ContextCompat.getDrawable(holder.context, result.user.img.toInt())
+                    binding.imvUser.background = urlImage
+                    binding.tvUserNameComment.text = result.user.name
+                    binding.tvUserCommetText.text = result.text
+                }
                 //binding.imvUser.load(result.img)
-                binding.tvUserNameComment.text = result.user.name
-                binding.tvUserCommetText.text = result.text
 
         }
 
@@ -35,7 +44,7 @@ class CommentsAdapter: RecyclerView.Adapter<CommentsAdapter.MyViewHolder>() {
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentComment = commentsList[position]
-        holder.bind(currentComment)
+        holder.bind(currentComment, holder.itemView)
     }
 
     override fun getItemCount(): Int {

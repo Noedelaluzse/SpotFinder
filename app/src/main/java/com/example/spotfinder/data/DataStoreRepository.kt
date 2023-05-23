@@ -12,7 +12,9 @@ import com.example.spotfinder.util.Constants.Companion.PREFERENCES_BACK_ONLINE
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_CATEGORY_NAME
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_CATEGORY_NAME_ID
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_NAME
+import com.example.spotfinder.util.Constants.Companion.PREFERENCES_UID_USER
 import com.example.spotfinder.util.Constants.Companion.PREFERENCES_VALID_USER
+import com.example.spotfinder.util.Constants.Companion.PREFERENCES_X_TOKEN
 import com.example.spotfinder.util.Options
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -33,6 +35,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val selectedCategoryId = intPreferencesKey(PREFERENCES_CATEGORY_NAME_ID)
         val backOnline = booleanPreferencesKey(PREFERENCES_BACK_ONLINE)
         val validUser = stringPreferencesKey(PREFERENCES_VALID_USER)
+        val uidUser = stringPreferencesKey(PREFERENCES_UID_USER)
+        val jwtToken = stringPreferencesKey(PREFERENCES_X_TOKEN)
     }
 
     private val dataStore: DataStore<Preferences> = context.dataStore
@@ -56,6 +60,16 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
+    suspend fun saveUID(uid: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.uidUser] = uid
+        }
+    }
+    suspend fun saveJWT(token: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.jwtToken] = token
+        }
+    }
     val readCategory: Flow<CategoryType> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
@@ -98,6 +112,34 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
             val user = preferences[PreferencesKeys.validUser] ?: LOG_OUT
             user
         }
+
+    val readUid: Flow<String> = dataStore.data
+        .catch { exception ->
+            if ( exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val uid = preferences[PreferencesKeys.uidUser] ?: ""
+            uid.toString()
+        }
+
+
+    val readJWT: Flow<String> = dataStore.data
+        .catch { exception ->
+            if ( exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val jwt = preferences[PreferencesKeys.jwtToken] ?: ""
+            jwt
+        }
+
 }
 
 data class CategoryType(

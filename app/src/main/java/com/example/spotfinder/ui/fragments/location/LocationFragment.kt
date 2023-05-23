@@ -28,6 +28,7 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState)
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.onResume()
+
         val args = arguments
         val myBundle: Place? = args?.getParcelable(Constants.BUNDLE_LKEY)
         val latitude = myBundle?.address?.latitude

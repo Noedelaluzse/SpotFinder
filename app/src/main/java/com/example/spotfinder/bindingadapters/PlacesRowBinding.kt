@@ -35,7 +35,7 @@ class PlacesRowBinding {
         @BindingAdapter("loadImageFromUrl")
         @JvmStatic
         fun loadImageFromUrl(imageView: ImageView, imageUrl: String) {
-            imageView.load(imageUrl) {
+            imageView.load("https://img.freepik.com/vector-gratis/apoye-concepto-negocio-local_23-2148592675.jpg") {
                 crossfade(600)
                 error(R.drawable.ic_error_placeholder)
             }

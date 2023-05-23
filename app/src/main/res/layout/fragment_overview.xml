@@ -54,27 +54,6 @@
         app:layout_constraintStart_toStartOf="@+id/tv_comments"
         app:tint="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_likes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100"
-        android:layout_marginEnd="12dp"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_comments"
-        app:layout_constraintEnd_toStartOf="@+id/tv_comments" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_like"
-        app:layout_constraintBottom_toTopOf="@+id/tv_likes"
-        app:layout_constraintEnd_toEndOf="@+id/tv_likes"
-        app:layout_constraintStart_toStartOf="@+id/tv_likes"
-        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -254,16 +233,17 @@
         app:layout_constraintTop_toTopOf="@+id/imv_others" />
 
     <ScrollView
+        android:id="@+id/sv_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imv_restaurante">
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -276,9 +256,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
+
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/comment_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:src="@drawable/ic_comment"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="20sp"
+        android:fontFamily="@font/courgette"
+        android:textColor="@color/darkGray"
+        android:textStyle="bold"
+        android:text="@string/title_place_description"
+        app:layout_constraintStart_toStartOf="@+id/imv_restaurante"
+        app:layout_constraintTop_toBottomOf="@+id/tv_restaurante" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

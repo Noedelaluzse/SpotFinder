@@ -69,6 +69,14 @@
         <action
             android:id="@+id/action_loginFragment_to_placesFragment"
             app:destination="@id/placesFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.spotfinder.ui.fragments.login.SignUpFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_sign_up" />
 
 </navigation>

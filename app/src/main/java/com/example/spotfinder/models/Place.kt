@@ -12,8 +12,6 @@ data class Place (
     @SerializedName("description") val description: String,
     @SerializedName("phone") val phone: String,
     @SerializedName("address") val address: @RawValue Address,
-    @SerializedName("classification") val classification: @RawValue Clasification,
-    @SerializedName("likes") val likes: Int,
     @SerializedName("uidOwner") val uidOwner: String,
     @SerializedName("restaurant") val restaurant:Boolean,
     @SerializedName("bar") val bar:Boolean,
@@ -22,6 +20,7 @@ data class Place (
     @SerializedName("live_music")val liveMusic:Boolean,
     @SerializedName("sports_bar")val sportBar:Boolean,
     @SerializedName("park") val park:Boolean,
-    @SerializedName("comments") val comments: Int = 25
+    @SerializedName("comments") val comments: String,
+    @SerializedName("img") val img: String
 
     ): Parcelable

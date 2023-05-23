@@ -7,12 +7,21 @@
     android:background="@color/lightGray"
     tools:context=".ui.fragments.profile.ProfileFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_profile_user"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_circle_user"
+        app:srcCompat="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
+        android:fontFamily="@font/courgette"
+        android:textSize="18sp"
         android:text="@string/title_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.159"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/img_profile_user" />
 
     <TextView
         android:id="@+id/tv_user_name"
@@ -36,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
         android:textColor="@color/black"
-        android:text="Noe de la luz"
+        android:fontFamily="@font/courgette"
+        android:text=""
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tv_user"
@@ -59,6 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="14dp"
         android:text="Teléfono"
+        android:textSize="18sp"
+        android:fontFamily="@font/courgette"
         app:layout_constraintStart_toStartOf="@+id/tv_user"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider" />
 
@@ -67,7 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
-        android:text="9984947274"
+        android:text=""
+        android:fontFamily="@font/courgette"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"

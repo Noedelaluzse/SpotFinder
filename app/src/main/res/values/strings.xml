@@ -39,5 +39,13 @@
     <string name="dialog_body">Los datos ingresados son incorrectos</string>
     <string name="ok">Aceptar</string>
     <string name="error_message">El usuario no existe o las credenciales son incorrectas</string>
+    <string name="place_holder_name">Tu nombre</string>
+    <string name="title_name">Nombre</string>
+    <string name="title_telefono">Télefono</string>
+    <string name="title_password">Contraseña</string>
+    <string name="title_avatar">Selecciona tu avatar</string>
+    <string name="telefono">Telefono</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="title_place_description">Descripción:</string>
 
 </resources>

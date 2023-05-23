@@ -2,7 +2,6 @@ package com.example.spotfinder.data
 
 import com.example.spotfinder.data.database.PlacesDao
 import com.example.spotfinder.data.database.PlacesEntity
-import com.example.spotfinder.data.database.UserEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

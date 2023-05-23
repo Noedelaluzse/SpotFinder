@@ -12,6 +12,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.example.spotfinder.R
 import com.example.spotfinder.databinding.FragmentLoginBinding
+import com.example.spotfinder.util.Constants
 import com.example.spotfinder.util.Constants.Companion.ERROR_CASE
 import com.example.spotfinder.util.Constants.Companion.LOG_IN
 import com.example.spotfinder.util.NetworkResult
@@ -49,6 +50,7 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(R.id.placesFragment)
             } else if(user == ERROR_CASE) {
                 validUser(R.string.error_message)
+                loginViewModel.saveUser(Constants.NONE_CASE)
             }
         }
 
@@ -79,6 +81,10 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.btnRegisterData.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
     }

@@ -18,7 +18,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_option2"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/baseline_code_24"
@@ -30,39 +30,60 @@
         app:layout_constraintVertical_bias="0.0"
         app:tint="@color/purple_700" />
 
+    <TextView
+        android:id="@+id/tv_user_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/courgette"
+        android:text="@string/telefono"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@+id/et_phone_number"
+        app:layout_constraintTop_toBottomOf="@+id/img_option2" />
 
     <EditText
         android:id="@+id/et_phone_number"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="38dp"
         android:layout_marginEnd="70dp"
         android:ems="10"
         android:hint="@string/place_holder_phone"
         android:inputType="phone"
+        android:fontFamily="@font/courgette"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_register" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/courgette"
+        android:layout_marginTop="24dp"
+        android:text="@string/contrase_a"
+        app:layout_constraintStart_toStartOf="@+id/et_phone_number"
+        app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
 
     <EditText
         android:id="@+id/et_password"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
+        android:fontFamily="@font/courgette"
         android:hint="@string/place_holder_password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/et_phone_number"
         app:layout_constraintStart_toStartOf="@+id/et_phone_number"
-        app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/btn_send_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/courgette"
         android:layout_marginTop="24dp"
         android:text="@string/title_log_in"
+
         app:layout_constraintEnd_toEndOf="@+id/et_password"
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
@@ -86,6 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/title_register"
+        android:fontFamily="@font/courgette"
         app:layout_constraintEnd_toEndOf="@+id/et_password"
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider3"
